@@ -1,4 +1,4 @@
-package com.revature.controller;
+package com.revature.repository;
 
 public class UserLoginAndPassword {
 

@@ -1,5 +1,7 @@
 package com.revature;
 
+import com.revature.controller.UserMainSelection;
+
 /** 
  * Create an instance of your controller and launch your application.
  * 
@@ -8,7 +10,10 @@ package com.revature;
 public class Main {
 
 	public static void main(String[] args) {
-		System.out.println("new method");
+		
+		UserMainSelection userChoice= new UserMainSelection();
+		userChoice.userMainSelection();
+		userChoice.doSomethingElse();
 
 	}
 }

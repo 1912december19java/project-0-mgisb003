@@ -1,5 +1,5 @@
 package com.revature.service;
 
-public class UserShowBalance {
+public class ViewBalance {
 
 }
