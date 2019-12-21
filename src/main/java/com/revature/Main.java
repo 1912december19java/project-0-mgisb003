@@ -13,8 +13,8 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		UserLoginIntake.userLoginIntake();
-		UserPasswordIntake.userPasswordIntake();
+//		UserLoginIntake.userLoginIntake();
+//		UserPasswordIntake.userPasswordIntake();
 		UserMainSelection.userMainSelection();
 		UserMainSelection.doSomethingElse();
 
