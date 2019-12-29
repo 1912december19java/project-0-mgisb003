@@ -3,30 +3,19 @@ package com.revature.model;
 public class Account {
 
 
-  private int id;
+
   private String username;
   private int passcode;
   private double accountBalance;
 
 
-  public Account(int id, String username, int passcode, double accountBalance) {
+  public Account(String username, int passcode, double accountBalance) {
     super();
-    this.id = id;
+
     this.username = username;
     this.passcode = passcode;
     this.accountBalance = accountBalance;
   }
-
-
-  public int getId() {
-    return id;
-  }
-
-
-  public void setId(int id) {
-    this.id = id;
-  }
-
 
   public String getUsername() {
     return username;
@@ -45,6 +34,7 @@ public class Account {
 
   public void setPasscode(int passcode) {
     this.passcode = passcode;
+    System.out.println("Password: ");
   }
 
 
@@ -60,7 +50,8 @@ public class Account {
 
   @Override
   public String toString() {
-    return "UserAccount [id=" + id + ", username=" + username + ", accountBalance=" + accountBalance + "]";
+    return "UserAccount [ username=" + username + ", accountBalance=" + accountBalance
+        + "]";
   }
 
 

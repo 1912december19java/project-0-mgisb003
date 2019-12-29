@@ -1,17 +1,19 @@
 package com.revature.repository;
 
-import java.util.List;
+
 import com.revature.model.Account;
 
 public interface AccountDao {
 
-  Account get(String username);
-  
-  Account saveUsername(String username);
-  
-  Account savePassword(int password);
-
   void update(Account account);
+
+  Account saveUserInfo(String username, int password, int accountBalance);
+
+  Account get(String getAccountBalance);
+
+  
+
+
 
   
 
