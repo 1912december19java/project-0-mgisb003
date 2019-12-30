@@ -13,14 +13,18 @@ public class UserRegistration {
     
     AccountDao newAccount = new AccountDaoPostgress();
     Scanner in =new Scanner(System.in);
+  //Lets user enter new username
     System.out.println("Enter your new username: ");
     String username = in.nextLine();
+  //Lets user enter new password
     System.out.println("Enter your new password: ");
     String password = in.nextLine();
+  //Stores user information in DB
     Account newUser = new Account(username, password, 0);
     newAccount.saveUserInfo(newUser);
+  //Prints out user DB info
     System.out.println(newUser);
-    
+  //Takes user to main selection screen
     UserMainSelection.userMainSelection();
 
 

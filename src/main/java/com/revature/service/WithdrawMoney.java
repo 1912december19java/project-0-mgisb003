@@ -16,12 +16,17 @@ public class WithdrawMoney {
     
     System.out.println("Enter the your username to withdraw: ");
     String username = in.nextLine();
+    
     Account newBalance = withdrawMoney.getBalance(username);
+    
     System.out.println("How much money would you like to withdraw?");
     double withdrawAmount = in.nextDouble();
+  //Runs operations which add money from user balance in SQL
     newBalance.setAccountBalance(withdrawAmount);
     withdrawMoney.updateWithdraw(newBalance);
-    System.out.println(newBalance);
+  //Prints out username and current balance
+    System.out.println(withdrawMoney.getBalance(username));
+  //Prompts user for another option
     UserMainSelection.doSomethingElse();
   
 
