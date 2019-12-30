@@ -16,13 +16,36 @@ public class AccountDaoPostgress implements AccountDao {
   static {
     try {
       conn = DriverManager.getConnection(
-          "jdbc:postgresql://database-1.cbu886n5wmpw.us-east-1.rds.amazonaws.com:5432/postgres",
-          "postgres", "Krelthor1!");
+          System.getenv("urlConn"),
+          System.getenv("username"),
+          System.getenv("password"));
     } catch (SQLException e) {
       e.printStackTrace();
     }
   }
+//Method which pulls user account balance information  
+  @Override
+  public Account getBalance(String username) {
+    Account out = null;
+    PreparedStatement stmt = null;
+    ResultSet rs = null;
 
+    try {
+      stmt = conn.prepareStatement("SELECT * FROM bankaccountinfo WHERE username = ?");
+      stmt.setString(1, username);
+      if (stmt.execute()) {
+        rs = stmt.getResultSet();
+      }
+      while (rs.next()) {
+        out = new Account(rs.getString("username"), rs.getString("passcode"), rs.getDouble("balance"));
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+    return out;
+  }
+//Method that adds user input to current account balance
   @Override
   public void updateDeposit(Account account) {
     PreparedStatement stmt = null;
@@ -36,10 +59,23 @@ public class AccountDaoPostgress implements AccountDao {
       e.printStackTrace();
     }
 
-
   }
+//Method that subtracts user input from current account balance
+  @Override
+  public void updateWithdraw(Account account) {
+    PreparedStatement stmt = null;
+    try {
+      stmt = conn.prepareStatement("UPDATE bankaccountinfo SET balance = balance - ? WHERE username = ?");
+      stmt.setDouble(1, account.getAccountBalance());
+      stmt.setString(2, account.getUsername());
+      stmt.execute();
 
-
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    
+  }
+//Creates new account through user input and saves onto DB
   @Override
   public void saveUserInfo(Account account) {
     PreparedStatement stmt = null;
@@ -55,9 +91,7 @@ public class AccountDaoPostgress implements AccountDao {
     }
     
   }
-
-
-
+//Allows user to access account from DB
   @Override
   public Account login(String username, int password) {
     Account out = null;
@@ -81,68 +115,6 @@ public class AccountDaoPostgress implements AccountDao {
 
     return out;
   }
-
-
-
-  @Override
-  public Account getUsername(String username) {
-    Account out = null;
-    PreparedStatement stmt = null;
-    ResultSet rs = null;
-
-    try {
-      stmt = conn.prepareStatement("SELECT * FROM bankaccountinfo WHERE username = ?");
-      stmt.setString(1, username);
-      if (stmt.execute()) {
-        rs = stmt.getResultSet();
-      }
-      while (rs.next()) {
-        out = new Account(rs.getString("username"), rs.getString("passcode"), rs.getDouble("balance"));
-      }
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-
-    return out;
-  }
-  @Override
-  public Account getBalance(String username) {
-    Account out = null;
-    PreparedStatement stmt = null;
-    ResultSet rs = null;
-
-    try {
-      stmt = conn.prepareStatement("SELECT * FROM bankaccountinfo WHERE username = ?");
-      stmt.setString(1, username);
-      if (stmt.execute()) {
-        rs = stmt.getResultSet();
-      }
-      while (rs.next()) {
-        out = new Account(rs.getString("username"), rs.getString("passcode"), rs.getDouble("balance"));
-      }
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-
-    return out;
-  }
-
-
-  @Override
-  public void updateWithdraw(Account account) {
-    PreparedStatement stmt = null;
-    try {
-      stmt = conn.prepareStatement("UPDATE bankaccountinfo SET balance = balance - ? WHERE username = ?");
-      stmt.setDouble(1, account.getAccountBalance());
-      stmt.setString(2, account.getUsername());
-      stmt.execute();
-
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-    
-  }
-
 
 }
 
