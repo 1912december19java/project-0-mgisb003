@@ -24,10 +24,10 @@ public class AccountDaoPostgress implements AccountDao {
   }
 
   @Override
-  public void update(Account account) {
+  public void updateDeposit(Account account) {
     PreparedStatement stmt = null;
     try {
-      stmt = conn.prepareStatement("UPDATE bankaccountinfo SET balance = ? WHERE username = ?");
+      stmt = conn.prepareStatement("UPDATE bankaccountinfo SET balance = ? + balance WHERE username = ?");
       stmt.setDouble(1, account.getAccountBalance());
       stmt.setString(2, account.getUsername());
       stmt.execute();
@@ -46,7 +46,7 @@ public class AccountDaoPostgress implements AccountDao {
     try {
       stmt = conn.prepareStatement("INSERT INTO bankaccountinfo(username,passcode,balance) VALUES (?,?,?)");
       stmt.setString(1, account.getUsername());
-      stmt.setInt(2, account.getPasscode());
+      stmt.setString(2, account.getPasscode());
       stmt.setDouble(3, account.getAccountBalance());
 
       stmt.execute();
@@ -73,7 +73,7 @@ public class AccountDaoPostgress implements AccountDao {
         rs = stmt.getResultSet();
       }
       while (rs.next()) {
-        out = new Account(rs.getString("username"), rs.getInt("passcode"), rs.getDouble("balance"));
+        out = new Account(rs.getString("username"), rs.getString("passcode"), rs.getDouble("balance"));
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -97,7 +97,7 @@ public class AccountDaoPostgress implements AccountDao {
         rs = stmt.getResultSet();
       }
       while (rs.next()) {
-        out = new Account(rs.getString("username"), rs.getInt("passcode"), rs.getDouble("balance"));
+        out = new Account(rs.getString("username"), rs.getString("passcode"), rs.getDouble("balance"));
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -118,13 +118,29 @@ public class AccountDaoPostgress implements AccountDao {
         rs = stmt.getResultSet();
       }
       while (rs.next()) {
-        out = new Account(rs.getString("username"), rs.getInt("passcode"), rs.getDouble("balance"));
+        out = new Account(rs.getString("username"), rs.getString("passcode"), rs.getDouble("balance"));
       }
     } catch (SQLException e) {
       e.printStackTrace();
     }
 
     return out;
+  }
+
+
+  @Override
+  public void updateWithdraw(Account account) {
+    PreparedStatement stmt = null;
+    try {
+      stmt = conn.prepareStatement("UPDATE bankaccountinfo SET balance = balance - ? WHERE username = ?");
+      stmt.setDouble(1, account.getAccountBalance());
+      stmt.setString(2, account.getUsername());
+      stmt.execute();
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    
   }
 
 

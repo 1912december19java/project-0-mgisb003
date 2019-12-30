@@ -5,17 +5,19 @@ public class Account {
 
 
   private String username;
-  private int passcode;
+  private String passcode;
   private double accountBalance;
 
 
-  public Account(String username, int passcode, double accountBalance) {
+  public Account(String username, String passcode, double accountBalance) {
     super();
 
     this.username = username;
     this.passcode = passcode;
     this.accountBalance = accountBalance;
   }
+
+ 
 
   public String getUsername() {
     return username;
@@ -27,12 +29,12 @@ public class Account {
   }
 
 
-  public int getPasscode() {
+  public String getPasscode() {
     return passcode;
   }
 
 
-  public void setPasscode(int passcode) {
+  public void setPasscode(String passcode) {
     this.passcode = passcode;
     System.out.println("Password: ");
   }

@@ -5,7 +5,9 @@ import com.revature.model.Account;
 
 public interface AccountDao {
 
-  void update(Account account);
+  void updateDeposit(Account account);
+  
+  void updateWithdraw(Account account);
 
   public void saveUserInfo(Account account);
 

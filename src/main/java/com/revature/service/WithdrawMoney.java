@@ -1,6 +1,7 @@
 package com.revature.service;
 
 import java.util.Scanner;
+import com.revature.controller.UserMainSelection;
 import com.revature.model.Account;
 import com.revature.repository.AccountDao;
 import com.revature.repository.AccountDaoPostgress;
@@ -12,15 +13,16 @@ public class WithdrawMoney {
   public static void withdrawAmount() {
 
     AccountDao withdrawMoney = new AccountDaoPostgress();
-
+    
+    System.out.println("Enter the your username to withdraw: ");
+    String username = in.nextLine();
+    Account newBalance = withdrawMoney.getBalance(username);
     System.out.println("How much money would you like to withdraw?");
     double withdrawAmount = in.nextDouble();
-    Account newBalance = withdrawMoney.getBalance(UserLoginIntake.login.getUsername()) - withdrawAmount;
-    
-    withdrawMoney.update();
-   
-
-    System.out.println("Your new balance is: " + newBalance);
+    newBalance.setAccountBalance(withdrawAmount);
+    withdrawMoney.updateWithdraw(newBalance);
+    System.out.println(newBalance);
+    UserMainSelection.doSomethingElse();
   
 
   }

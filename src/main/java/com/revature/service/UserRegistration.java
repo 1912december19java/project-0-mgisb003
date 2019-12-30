@@ -16,7 +16,7 @@ public class UserRegistration {
     System.out.println("Enter your new username: ");
     String username = in.nextLine();
     System.out.println("Enter your new password: ");
-    int password = in.nextInt();
+    String password = in.nextLine();
     Account newUser = new Account(username, password, 0);
     newAccount.saveUserInfo(newUser);
     System.out.println(newUser);
