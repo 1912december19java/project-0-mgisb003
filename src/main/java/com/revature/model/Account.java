@@ -53,7 +53,7 @@ public class Account {
   @Override
   public String toString() {
     return "UserAccount [ username=" + username + ", accountBalance=" + accountBalance
-        + "]";
+        + "]\n";
   }
 
 

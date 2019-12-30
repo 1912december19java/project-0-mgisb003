@@ -1,18 +1,18 @@
 package com.revature.service;
 
-import java.util.Scanner;
+import com.revature.controller.UserLoginInformation;
 import com.revature.controller.UserMainSelection;
 import com.revature.model.Account;
 import com.revature.repository.AccountDao;
 import com.revature.repository.AccountDaoPostgress;
 
-public class UserRegistration {
+public class UserRegistration extends UserLoginInformation {
 
 
   public static void userRegistration() {
     
     AccountDao newAccount = new AccountDaoPostgress();
-    Scanner in =new Scanner(System.in);
+    
   //Lets user enter new username
     System.out.println("Enter your new username: ");
     String username = in.nextLine();
