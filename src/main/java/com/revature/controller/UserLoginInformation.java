@@ -1,14 +1,15 @@
 package com.revature.controller;
 
-import com.revature.repository.AccountDao;
-import com.revature.repository.AccountDaoPostgress;
+import java.util.Scanner;
 import com.revature.service.UserRegistration;
 
-public class UserLoginInformation extends ScannerClass {
+public class UserLoginInformation  {
 
-  static AccountDao accountDao = new AccountDaoPostgress();
+    
 
   public static void userRegisterIntake() {
+    
+    Scanner in =new Scanner(System.in);
     
     System.out.println("Do you have an account?:\n1)YES\n2)NO");
     int userRegister = in.nextInt();

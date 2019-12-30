@@ -1,5 +1,6 @@
 package com.revature.service;
 
+import java.util.Scanner;
 import com.revature.controller.UserLoginInformation;
 import com.revature.controller.UserMainSelection;
 import com.revature.model.Account;
@@ -12,7 +13,7 @@ public class UserRegistration extends UserLoginInformation {
   public static void userRegistration() {
     
     AccountDao newAccount = new AccountDaoPostgress();
-    
+    Scanner in =new Scanner(System.in);
   //Lets user enter new username
     System.out.println("Enter your new username: ");
     String username = in.nextLine();
@@ -25,7 +26,8 @@ public class UserRegistration extends UserLoginInformation {
   //Prints out user DB info
     System.out.println(newUser);
   //Takes user to main selection screen
-    UserMainSelection.userMainSelection();
+    UserMainSelection.login();
+    in.close();
 
 
   }

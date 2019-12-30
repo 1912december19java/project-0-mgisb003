@@ -12,13 +12,13 @@ import com.revature.service.WithdrawMoney;
 public class UserMainSelection {
 
   protected static String username;
-  protected static String password;
-  
+  protected static String password;  
   protected static Scanner in = new Scanner(System.in);
   protected static AccountDao user = new AccountDaoPostgress();
   
   
   public static void login() {    
+    
     //Allows user to enter username and password
     System.out.print("Enter username here: ");
     username = in.nextLine();
