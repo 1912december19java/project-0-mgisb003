@@ -16,7 +16,7 @@ public class UserMainSelection {
 			while (true) {
 
 				System.out
-						.println("What would you like to do?\n1)View balance\n2)Withdraw money" + "\n3)Deposit money");
+						.println("What would you like to do?\n1)View balance\n2)Withdraw money\n3)Deposit money");
 				Integer userChoice = in.nextInt();
 
 				if (userChoice == 1) {

@@ -1,17 +1,25 @@
 package com.revature.service;
 
 import java.util.Scanner;
+import com.revature.controller.UserMainSelection;
 import com.revature.model.Account;
+import com.revature.repository.AccountDao;
+import com.revature.repository.AccountDaoPostgress;
 
 public class ViewBalance {
 
   public static void viewBalance() {
+    AccountDao getAccBal = new AccountDaoPostgress();
+
     Scanner in = new Scanner(System.in);
-    System.out.println("Enter your username to view your current balance: ");
-    String getAccountBalance = in.nextLine();
-    Account viewUserBalance = new Account(getAccountBalance, 0, 0);
-    System.out.println(viewUserBalance);
-    in.close();
+    AccountDao viewBalance = new AccountDaoPostgress();
+    System.out.println("Enter your username to view your balance: ");
+    String username = in.nextLine();
+    Account currentBalance = viewBalance.getBalance(username);
+    System.out.println(currentBalance);
+    
+    UserMainSelection.doSomethingElse();
+
   }
 
 }

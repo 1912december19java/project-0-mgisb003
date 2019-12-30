@@ -7,14 +7,13 @@ public interface AccountDao {
 
   void update(Account account);
 
-  Account saveUserInfo(String username, int password, int accountBalance);
+  public void saveUserInfo(Account account);
 
-  Account get(String getAccountBalance);
-
+  Account login(String username, int password);
   
+  Account getUsername(String username);
 
-
-
+  Account getBalance(String username);
   
 
 }

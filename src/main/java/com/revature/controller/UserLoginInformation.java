@@ -4,6 +4,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 import com.revature.repository.AccountDao;
 import com.revature.repository.AccountDaoPostgress;
+import com.revature.service.UserLoginIntake;
 import com.revature.service.UserRegistration;
 
 public class UserLoginInformation {
@@ -17,31 +18,13 @@ public class UserLoginInformation {
     Scanner in = new Scanner(System.in);
 
 
-    System.out.print("Do you have an account?:\n1)YES\n2)NO");
+    System.out.println("Do you have an account?:\n1)YES\n2)NO");
+    int userRegister = in.nextInt();
 
-    try {
-      while (true) {
-        int userRegister = in.nextInt();
-
-        if (userRegister == 1) {
-
-          UserLoginIntake.userLoginIntake();
-          UserPasswordIntake.userPasswordIntake();
-
-        } else if (userRegister == 2) {
-
-          UserRegistration.userRegistration();
-
-        }
-
-      }
-    } catch (InputMismatchException e) {
-     
-    }catch (NullPointerException e) {
-      UserMainSelection.userMainSelection();
-    }finally {
-      in.close();
+    if (userRegister == 1) {
+      UserLoginIntake.userLoginIntake();
+    } else if (userRegister == 2) {
+      UserRegistration.userRegistration();
     }
-
   }
 }

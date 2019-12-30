@@ -13,17 +13,15 @@ public class WithdrawMoney {
 
     AccountDao withdrawMoney = new AccountDaoPostgress();
 
-    System.out.println("Enter your username to deposit money: ");
-    String username = in.nextLine();
     System.out.println("How much money would you like to withdraw?");
-    Integer withdrawAmount = in.nextInt();
+    double withdrawAmount = in.nextDouble();
+    Account newBalance = withdrawMoney.getBalance(UserLoginIntake.login.getUsername()) - withdrawAmount;
+    
+    withdrawMoney.update();
+   
 
-    Account balanceToChange = new Account(username, 0, 0);
-    double currentBalance = balanceToChange.getAccountBalance();
-    balanceToChange.setAccountBalance(currentBalance - withdrawAmount);
-    withdrawMoney.update(balanceToChange);
-
-    System.out.println("Your new balance is: " + balanceToChange);
+    System.out.println("Your new balance is: " + newBalance);
+  
 
   }
 

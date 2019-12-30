@@ -5,8 +5,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import com.revature.model.Account;
 
 public class AccountDaoPostgress implements AccountDao {
@@ -26,30 +24,6 @@ public class AccountDaoPostgress implements AccountDao {
   }
 
   @Override
-  public Account get(String accountBalance) {
-    Account out = null;
-    PreparedStatement stmt = null;
-    ResultSet rs = null;
-
-    try {
-      stmt = conn.prepareStatement("SELECT balance FROM bankaccountinfo WHERE username= ?");
-      stmt.setString(1, accountBalance);
-      if (stmt.execute()) {
-        rs = stmt.getResultSet();
-      }
-
-      while (rs.next()) {
-        out = new Account(rs.getString("username"), rs.getInt("passcode"), rs.getDouble("balance"));
-      }
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-    return out;
-  }
-
-
-
-  @Override
   public void update(Account account) {
     PreparedStatement stmt = null;
     try {
@@ -67,27 +41,93 @@ public class AccountDaoPostgress implements AccountDao {
 
 
   @Override
-  public Account saveUserInfo(String username, int password, int accountBalance) {
+  public void saveUserInfo(Account account) {
+    PreparedStatement stmt = null;
+    try {
+      stmt = conn.prepareStatement("INSERT INTO bankaccountinfo(username,passcode,balance) VALUES (?,?,?)");
+      stmt.setString(1, account.getUsername());
+      stmt.setInt(2, account.getPasscode());
+      stmt.setDouble(3, account.getAccountBalance());
+
+      stmt.execute();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    
+  }
+
+
+
+  @Override
+  public Account login(String username, int password) {
     Account out = null;
     PreparedStatement stmt = null;
     ResultSet rs = null;
 
     try {
-      stmt = conn.prepareStatement(
-          "INSERT INTO bankaccountinfo(username,passcode,balance) VALUES (?,?,?)");
+      stmt = conn
+          .prepareStatement("SELECT * FROM bankaccountinfo WHERE username = ? and passcode = ?");
       stmt.setString(1, username);
       stmt.setInt(2, password);
-      stmt.setInt(3, accountBalance);
       if (stmt.execute()) {
         rs = stmt.getResultSet();
       }
-
       while (rs.next()) {
         out = new Account(rs.getString("username"), rs.getInt("passcode"), rs.getDouble("balance"));
       }
     } catch (SQLException e) {
       e.printStackTrace();
     }
+
     return out;
   }
+
+
+
+  @Override
+  public Account getUsername(String username) {
+    Account out = null;
+    PreparedStatement stmt = null;
+    ResultSet rs = null;
+
+    try {
+      stmt = conn.prepareStatement("SELECT * FROM bankaccountinfo WHERE username = ?");
+      stmt.setString(1, username);
+      if (stmt.execute()) {
+        rs = stmt.getResultSet();
+      }
+      while (rs.next()) {
+        out = new Account(rs.getString("username"), rs.getInt("passcode"), rs.getDouble("balance"));
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+    return out;
+  }
+  @Override
+  public Account getBalance(String username) {
+    Account out = null;
+    PreparedStatement stmt = null;
+    ResultSet rs = null;
+
+    try {
+      stmt = conn.prepareStatement("SELECT * FROM bankaccountinfo WHERE username = ?");
+      stmt.setString(1, username);
+      if (stmt.execute()) {
+        rs = stmt.getResultSet();
+      }
+      while (rs.next()) {
+        out = new Account(rs.getString("username"), rs.getInt("passcode"), rs.getDouble("balance"));
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+    return out;
+  }
+
+
 }
+
+
