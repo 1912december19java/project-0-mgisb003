@@ -6,6 +6,7 @@ import com.revature.model.Account;
 import com.revature.repository.AccountDao;
 import com.revature.repository.AccountDaoPostgress;
 import com.revature.service.DepositMoney;
+import com.revature.service.UserRegistration;
 import com.revature.service.ViewBalance;
 import com.revature.service.WithdrawMoney;
 
@@ -15,33 +16,61 @@ public class UserMainSelection {
   protected static String password;
   protected static Scanner in = new Scanner(System.in);
   protected static AccountDao user = new AccountDaoPostgress();
+  static Account account;
 
 
   public static void login() {
 
-    // Allows user to enter username and password
-    System.out.println("Enter username here: ");
-    username = in.nextLine();
-    System.out.println("Enter password here: ");
-    password = in.nextLine();
-    // Used to verify if account exists in DB
-    Account account = user.getBalance(username);
-    if (account == null) {
-      System.out.println("Incorrect username or password please try again. ");
-      login();
-    } else {
-      userMainSelection();
+    for (int i = 3; i >= 0; i--) {
+      // Allows user to enter username and password
+      System.out.println("Enter username here: ");
+      username = in.nextLine();
+      System.out.println("Enter password here: ");
+      password = in.nextLine();
+      // Used to verify if account exists in DB
+      account = user.getBalance(username);
+      if (account != null) {
+        userMainSelection();
+        break;
+      } else if (account == null) {
+        System.out.println("Incorrect username or password please try again. You have " + i
+            + " attempts remaining.");
+        if (i == 0) {
+          while (true) {
+            try {
+              System.out.println(
+                  "Maximum number of attempts reached. Would you like to make a new account?\n1)YES\n2)NO");
+              Integer newAccount = Integer.parseInt(in.nextLine());
+              if (newAccount == 1) {
+                UserRegistration.userRegistration();
+                break;
+
+              } else if (newAccount == 2) {
+                System.out.println("Have a nice day :)");
+                break;
+              }
+            } catch (InputMismatchException e) {
+
+            } catch (NumberFormatException e) {
+              System.out.println("Please enter 1 or 2");
+            }
+          }
+        }
+      }
     }
   }
 
+
+
   public static void userMainSelection() {
-    
-    try {
-      while (true) {
-        // Allows user to make selection as to which function to do
+
+
+    while (true) {
+      try {
+        // Allows user to make selection as to which function to use
         System.out.println(
             "What would you like to do?\n1)View balance\n2)Withdraw money\n3)Deposit money");
-        Integer userChoice = in.nextInt();
+        Integer userChoice = Integer.parseInt(in.nextLine());
 
         if (userChoice == 1) {
           // Method for viewing current balance
@@ -57,28 +86,25 @@ public class UserMainSelection {
           // Method for implementing withdraw
           DepositMoney.depositAmount();
           break;
-
         }
+
+      } catch (InputMismatchException e) {
+
+      } catch (NumberFormatException e) {
+        System.out.println("Please enter 1, 2, or 3");
       }
-
-
-    } catch (InputMismatchException e) {
-      System.out.println("Please enter 1, 2, or 3");
-      userMainSelection();
-    } finally {
-      in.close();
     }
-
   }
 
   // Allows user to do another function or exit program
   public static void doSomethingElse() {
 
-    try {
-      while (true) {
+
+    while (true) {
+      try {
         System.out
             .println("Would you like to do anything else with your account?" + "\n1)Yes\n2)No");
-        Integer userChoice = in.nextInt();
+        Integer userChoice = Integer.parseInt(in.nextLine());
 
         if (userChoice == 1) {
           // Takes user to choice option
@@ -88,18 +114,15 @@ public class UserMainSelection {
           // Terminates program
           System.out.println("Have a nice day :)");
           break;
-        } else {
-          // Reruns method on case of invalid input
-          System.out.println("Please enter 1 or 2");
         }
+      } catch (InputMismatchException e) {
 
+      } catch (NumberFormatException e) {
+        System.out.println("Please enter 1 or 2");
+        doSomethingElse();
       }
-    } catch (InputMismatchException e) {
-      UserMainSelection.doSomethingElse();
-    } finally {
-      in.close();
+      break;
     }
 
   }
-
 }
