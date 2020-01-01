@@ -26,6 +26,11 @@ public class UserRegistration extends UserLoginInformation {
     newAccount.saveUserInfo(newUser);
     // Prints out user DB info
     System.out.println(newUser);
+    log_in();
+  }
+
+
+  public static void log_in() {
     while (true) {
       try {
         // Allows user to make choice of logging in or exiting
@@ -47,7 +52,7 @@ public class UserRegistration extends UserLoginInformation {
         System.out.println("Please enter 1 or 2");
       }
     }
+
   }
 }
-
 

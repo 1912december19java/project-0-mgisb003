@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import com.revature.model.Account;
+import com.revature.service.UserRegistration;
 
 public class AccountDaoPostgress implements AccountDao {
 
@@ -15,9 +16,7 @@ public class AccountDaoPostgress implements AccountDao {
 
   static {
     try {
-      conn = DriverManager.getConnection(
-          System.getenv("urlConn"), 
-          System.getenv("username"),
+      conn = DriverManager.getConnection(System.getenv("urlConn"), System.getenv("username"),
           System.getenv("password"));
     } catch (SQLException e) {
       e.printStackTrace();
@@ -54,18 +53,22 @@ public class AccountDaoPostgress implements AccountDao {
   @Override
   public void saveUserInfo(Account account) {
     PreparedStatement stmt = null;
-    try {
-      stmt = conn.prepareStatement(
-          "INSERT INTO bankaccountinfo(username,passcode,balance) VALUES (?,?,?)");
-      stmt.setString(1, account.getUsername());
-      stmt.setString(2, account.getPasscode());
-      stmt.setDouble(3, account.getAccountBalance());
+    while (true) {
+      try {
+        stmt = conn.prepareStatement(
+            "INSERT INTO bankaccountinfo(username,passcode,balance) VALUES (?,?,?)");
+        stmt.setString(1, account.getUsername());
+        stmt.setString(2, account.getPasscode());
+        stmt.setDouble(3, account.getAccountBalance());
 
-      stmt.execute();
-    } catch (SQLException e) {
-      e.printStackTrace();
+        stmt.execute();
+        break;
+      } catch (SQLException e) {
+        System.out.println("Username is already in use: ");
+         UserRegistration.userRegistration();
+        break;
+      }
     }
-
   }
 
   // Method which pulls user account balance information
@@ -121,7 +124,7 @@ public class AccountDaoPostgress implements AccountDao {
       stmt.execute();
 
     } catch (SQLException e) {
-      e.printStackTrace();
+      System.out.println("You do not have enough funds to withraw that amount.");
     }
   }
 }
