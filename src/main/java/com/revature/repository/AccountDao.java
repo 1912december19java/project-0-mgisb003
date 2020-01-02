@@ -10,9 +10,7 @@ public interface AccountDao {
   void updateWithdraw(Account account);
 
   void saveUserInfo(Account account);
-
-  Account login(String username, String password);
-
+ 
   Account getBalance(String username);
 
  

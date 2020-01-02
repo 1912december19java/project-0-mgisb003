@@ -14,11 +14,17 @@ public class WithdrawMoney extends UserMainSelection {
         // Intakes withdraw amount
         System.out.println("How much money would you like to withdraw?");
         double withdrawAmount = Double.parseDouble(in.nextLine());
-        // Runs operations which subtracts input from user balance in SQL
-        newBalance.setAccountBalance(withdrawAmount);
-        user.updateWithdraw(newBalance);
-        // Prints out username and current balance
-        System.out.println(user.getBalance(username));
+        if (withdrawAmount <= 0) {
+          System.out.println("Your withdrawal amount is invalid.");
+          withdrawAmount();
+          break;
+          }
+          // Runs operations which subtracts input from user balance in SQL
+          newBalance.setAccountBalance(withdrawAmount);
+          user.updateWithdraw(newBalance);
+          // Prints out username and current balance
+          System.out.println(user.getBalance(username));
+        
       } catch (InputMismatchException e) {
       } catch (NumberFormatException e) {
         withdrawAmount();

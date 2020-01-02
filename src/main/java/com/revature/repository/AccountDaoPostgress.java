@@ -22,33 +22,7 @@ public class AccountDaoPostgress implements AccountDao {
       e.printStackTrace();
     }
   }
-
-  // Allows user to access account from DB
-  @Override
-  public Account login(String username, String password) {
-    Account out = null;
-    PreparedStatement stmt = null;
-    ResultSet rs = null;
-
-    try {
-      stmt = conn
-          .prepareStatement("SELECT * FROM bankaccountinfo WHERE username = ? and passcode = ?");
-      stmt.setString(1, username);
-      stmt.setString(2, password);
-      if (stmt.execute()) {
-        rs = stmt.getResultSet();
-      }
-      while (rs.next()) {
-        out = new Account(rs.getString("username"), rs.getString("passcode"),
-            rs.getDouble("balance"));
-      }
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-
-    return out;
-  }
-
+ 
   // Creates new account through user input and saves onto DB
   @Override
   public void saveUserInfo(Account account) {
@@ -107,7 +81,7 @@ public class AccountDaoPostgress implements AccountDao {
       stmt.execute();
 
     } catch (SQLException e) {
-      e.printStackTrace();
+      
     }
 
   }
