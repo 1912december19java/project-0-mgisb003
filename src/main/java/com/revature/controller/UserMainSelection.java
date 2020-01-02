@@ -16,7 +16,8 @@ public class UserMainSelection {
   protected static String password;
   protected static Scanner in = new Scanner(System.in);
   protected static AccountDao user = new AccountDaoPostgress();
-  static Account account;
+  static Account accountU;
+  static Account accountP;
 
 
   public static void login() {
@@ -28,11 +29,12 @@ public class UserMainSelection {
       System.out.println("Enter password here: ");
       password = in.nextLine();
       // Used to verify if account exists in DB
-      account = user.getBalance(username);
-      if (account != null) {
+      accountU = user.getUsername(username);
+      accountP = user.getPassword(password);
+      if (accountU != null & accountP != null) {
         userMainSelection();
         break;
-      } else if (account == null) {
+      } else if (accountU == null || accountP == null) {
         System.out.println("Incorrect username or password please try again. You have " + i
             + " attempts remaining.");
         if (i == 0) {
@@ -98,7 +100,6 @@ public class UserMainSelection {
 
   // Allows user to do another function or exit program
   public static void doSomethingElse() {
-
 
     while (true) {
       try {

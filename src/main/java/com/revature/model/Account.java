@@ -35,8 +35,7 @@ public class Account {
 
 
   public void setPasscode(String passcode) {
-    this.passcode = passcode;
-    System.out.println("Password: ");
+    this.passcode = passcode;    
   }
 
 

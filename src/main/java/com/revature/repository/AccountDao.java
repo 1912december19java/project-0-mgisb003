@@ -12,8 +12,10 @@ public interface AccountDao {
   void saveUserInfo(Account account);
  
   Account getBalance(String username);
-
- 
+  
+  Account getUsername(String username);
+  
+  Account getPassword(String password);
   
 
 }
