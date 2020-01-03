@@ -25,7 +25,7 @@ public class UserLoginInformation {
           UserRegistration.userRegistration();
           break;
         }
-      } catch (InputMismatchException e) {
+      }catch (InputMismatchException e) {
 
       } catch (NumberFormatException e) {
         System.out.println("Please enter 1 or 2");

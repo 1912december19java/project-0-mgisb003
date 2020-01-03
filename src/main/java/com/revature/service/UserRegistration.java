@@ -18,24 +18,29 @@ public class UserRegistration extends UserLoginInformation {
     // Lets user enter new username to be stored
     System.out.println("Enter your new username: ");
     String username = in.nextLine();
-    // Lets user enter new password to be stored
-    System.out.println("Enter your new password: ");
-    String password = in.nextLine();
-    // Stores user information in DB
-    Account account = newAccount.getBalance(username);
+    Account account = newAccount.getUsername(username);
     // Checks if username already exists
     if (account != null) {
       System.out.println("Username already exists");
       userRegistration();
     } else {
-      Account newUser = new Account(username, password, 0);
+      // Lets user enter new password to be stored
+      System.out.println("Enter your new password: ");
+      String password = in.nextLine();
+      // Lets user enter first name to be stored
+      System.out.println("Enter your first name: ");
+      String firstName = in.nextLine();
+      // Lets user enter last name to be stored
+      System.out.println("Enter your last name: ");
+      String lastName = in.nextLine();
+      // Stores user information in DB
+      Account newUser = new Account(username, password, firstName, lastName, 0, 0);
       newAccount.saveUserInfo(newUser);
       // Prints out user DB info
       System.out.println(newUser);
       log_in();
     }
   }
-
 
   public static void log_in() {
     while (true) {

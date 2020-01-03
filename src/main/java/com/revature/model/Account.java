@@ -6,18 +6,25 @@ public class Account {
 
   private String username;
   private String passcode;
-  private double accountBalance;
+  private String firstName;
+  private String lastName;
+  private double checkingBalance;
+  private double savingBalance;
 
 
-  public Account(String username, String passcode, double accountBalance) {
+  public Account(String username, String passcode, String firstName, String lastName,
+      double checkingBalance, double savingBalance) {
     super();
 
     this.username = username;
     this.passcode = passcode;
-    this.accountBalance = accountBalance;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.checkingBalance = checkingBalance;
+    this.savingBalance = savingBalance;
   }
 
- 
+
 
   public String getUsername() {
     return username;
@@ -35,24 +42,53 @@ public class Account {
 
 
   public void setPasscode(String passcode) {
-    this.passcode = passcode;    
+    this.passcode = passcode;
+  }
+  
+
+  public String getFirstName() {
+    return firstName;
   }
 
 
-  public double getAccountBalance() {
-    return accountBalance;
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
   }
 
 
-  public void setAccountBalance(double accountBalance) {
-    this.accountBalance = accountBalance;
+  public String getLastName() {
+    return lastName;
+  }
+
+
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
+
+
+  public double getCheckingBalance() {
+    return checkingBalance;
+  }
+
+
+  public void setCheckingBalance(double checkingBalance) {
+    this.checkingBalance = checkingBalance;
+  }
+
+
+  public double getSavingBalance() {
+    return savingBalance;
+  }
+
+
+  public void setSavingBalance(double savingBalance) {
+    this.savingBalance = savingBalance;
   }
 
 
   @Override
   public String toString() {
-    return "UserAccount [ username=" + username + ", accountBalance=" + accountBalance
-        + "]\n";
+    return "UserAccount:\n[ Username= " + username + "\nChecking balance= " + checkingBalance + "\nSavings balance= " + savingBalance + " ]\n";
   }
 
 

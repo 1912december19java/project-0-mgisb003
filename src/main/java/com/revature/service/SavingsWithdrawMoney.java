@@ -4,9 +4,9 @@ import java.util.InputMismatchException;
 import com.revature.controller.UserMainSelection;
 import com.revature.model.Account;
 
-public class CheckingWithdrawMoney extends UserMainSelection {
+public class SavingsWithdrawMoney extends UserMainSelection {
 
-  public static void checkingWithdrawAmount() {
+  public static void savingsWithdrawAmount() {
 
     while (true) {
       try {
@@ -16,18 +16,18 @@ public class CheckingWithdrawMoney extends UserMainSelection {
         double withdrawAmount = Double.parseDouble(in.nextLine());
         if (withdrawAmount <= 0) {
           System.out.println("Your withdrawal amount is invalid.");
-          checkingWithdrawAmount();
+          savingsWithdrawAmount();
           break;
-          }
-          // Runs operations which subtracts input from user balance in SQL
-          newBalance.setCheckingBalance(withdrawAmount);
-          user.updateWithdrawChecking(newBalance);
-          // Prints out username and current balance
-          System.out.println(user.getBalance(username));
-        
+        }
+        // Runs operations which subtracts input from user balance in SQL
+        newBalance.setSavingBalance(withdrawAmount);
+        user.updateWithdrawSaving(newBalance);
+        // Prints out username and current balance
+        System.out.println(user.getBalance(username));
+
       } catch (InputMismatchException e) {
       } catch (NumberFormatException e) {
-        checkingWithdrawAmount();
+        savingsWithdrawAmount();
         break;
       }
       // Prompts user for another option

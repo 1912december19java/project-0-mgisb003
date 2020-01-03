@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.apache.log4j.Logger;
+import com.revature.exception.UsernameAlreadyExistsException;
+import com.revature.exception.UsernameDoesNotExistException;
 import com.revature.model.Account;
 import com.revature.service.UserRegistration;
 
@@ -42,12 +44,15 @@ public class AccountDaoPostgress implements AccountDao {
       }
       while (rs.next()) {
         out = new Account(rs.getString("username"), rs.getString("passcode"),
-            rs.getDouble("balance"));
+            rs.getString("firstname"), rs.getString("lastname"), rs.getDouble("checkingaccount"),
+            rs.getDouble("savingsaccount"));
       }
+    }catch (UsernameDoesNotExistException e) {
+    } catch (UsernameAlreadyExistsException e) {
     } catch (SQLException e) {
 
     }
-    log.trace("User logged in");
+    log.trace("User usernamed returned");
     return out;
   }
 
@@ -67,12 +72,14 @@ public class AccountDaoPostgress implements AccountDao {
       }
       while (rs.next()) {
         out = new Account(rs.getString("username"), rs.getString("passcode"),
-            rs.getDouble("balance"));
+            rs.getString("firstname"), rs.getString("lastname"), rs.getDouble("checkingaccount"),
+            rs.getDouble("savingsaccount"));
       }
+
     } catch (SQLException e) {
 
     }
-    log.trace("User logged in");
+    log.trace("User password returned");
     return out;
   }
 
@@ -83,13 +90,18 @@ public class AccountDaoPostgress implements AccountDao {
     while (true) {
       try {
         stmt = conn.prepareStatement(
-            "INSERT INTO bankaccountinfo(username,passcode,balance) VALUES (?,?,?)");
+            "INSERT INTO bankaccountinfo(username,passcode,firstname,lastname,checkingaccount,savingsaccount) VALUES (?,?,?,?,?,?)");
         stmt.setString(1, account.getUsername());
         stmt.setString(2, account.getPasscode());
-        stmt.setDouble(3, account.getAccountBalance());
+        stmt.setString(3, account.getFirstName());
+        stmt.setString(4, account.getLastName());
+        stmt.setDouble(5, account.getCheckingBalance());
+        stmt.setDouble(6, account.getSavingBalance());
 
         stmt.execute();
         break;
+        
+      } catch (UsernameAlreadyExistsException e) {
 
       } catch (SQLException e) {
         System.out.println("Username is already in use: ");
@@ -115,47 +127,119 @@ public class AccountDaoPostgress implements AccountDao {
       }
       while (rs.next()) {
         out = new Account(rs.getString("username"), rs.getString("passcode"),
-            rs.getDouble("balance"));
+            rs.getString("firstname"), rs.getString("lastname"), rs.getDouble("checkingaccount"),
+            rs.getDouble("savingsaccount"));
       }
     } catch (SQLException e) {
       e.printStackTrace();
     }
-    log.trace("account balance returned");
+    log.trace("savings and checking account balance returned");
     return out;
   }
 
   // Method that adds user input to current account balance
   @Override
-  public void updateDeposit(Account account) {
+  public void updateDepositChecking(Account account) {
     PreparedStatement stmt = null;
     try {
-      stmt = conn
-          .prepareStatement("UPDATE bankaccountinfo SET balance = ? + balance WHERE username = ?");
-      stmt.setDouble(1, account.getAccountBalance());
+      stmt = conn.prepareStatement(
+          "UPDATE bankaccountinfo SET checkingaccount = ? + checkingaccount WHERE username = ?");
+      stmt.setDouble(1, account.getCheckingBalance());
       stmt.setString(2, account.getUsername());
       stmt.execute();
     } catch (SQLException e) {
     }
-    log.trace("account balance updated");
+    log.trace("checking account balance updated");
 
   }
 
   // Method that subtracts user input from current account balance
   @Override
-  public void updateWithdraw(Account account) {
+  public void updateWithdrawChecking(Account account) {
     PreparedStatement stmt = null;
     try {
-      stmt = conn
-          .prepareStatement("UPDATE bankaccountinfo SET balance = balance - ? WHERE username = ?");
-      stmt.setDouble(1, account.getAccountBalance());
+      stmt = conn.prepareStatement(
+          "UPDATE bankaccountinfo SET checkingaccount = checkingaccount - ? WHERE username = ?");
+      stmt.setDouble(1, account.getCheckingBalance());
       stmt.setString(2, account.getUsername());
       stmt.execute();
 
     } catch (SQLException e) {
-      System.out.println("You do not have enough funds to withraw that amount.");
+      System.out.println("You do not have enough funds to withdraw that amount.");
     }
-    log.trace("account balance updated");
+    log.trace("checking account balance updated");
   }
+
+  // Method that adds user input to current account balance
+  @Override
+  public void updateDepositSaving(Account account) {
+    PreparedStatement stmt = null;
+    try {
+      stmt = conn.prepareStatement(
+          "UPDATE bankaccountinfo SET savingsaccount = ? + savingsaccount WHERE username = ?");
+      stmt.setDouble(1, account.getSavingBalance());
+      stmt.setString(2, account.getUsername());
+      stmt.execute();
+    } catch (SQLException e) {
+    }
+    log.trace("savings account balance updated");
+
+  }
+
+  // Method that subtracts user input from current account balance
+  @Override
+  public void updateWithdrawSaving(Account account) {
+    PreparedStatement stmt = null;
+    try {
+      stmt = conn.prepareStatement(
+          "UPDATE bankaccountinfo SET savingsaccount = savingsaccount - ? WHERE username = ?");
+      stmt.setDouble(1, account.getSavingBalance());
+      stmt.setString(2, account.getUsername());
+      stmt.execute();
+
+    } catch (SQLException e) {
+      System.out.println("You do not have enough funds to withdraw that amount.");
+    }
+    log.trace("savings account balance updated");
+  }
+
+  // Method that transfers from savings account to checking Account
+  @Override
+  public void savingToChecking(Account account) {
+    PreparedStatement stmt = null;
+    try {
+      stmt = conn.prepareStatement("UPDATE bankaccountinfo SET savingsaccount = savingsaccount - ?"
+          + ",checkingaccount = ? + checkingaccount WHERE username = ?");
+      stmt.setDouble(1, account.getSavingBalance());
+      stmt.setDouble(2, account.getCheckingBalance());
+      stmt.setString(3, account.getUsername());
+      stmt.execute();
+
+    } catch (SQLException e) {
+      System.out.println("You do not have enough funds to withdraw that amount.");
+    }
+    log.trace("savings and checking account balance updated");
+  }
+
+  // Method that transfers from checking account to savings Account
+  @Override
+  public void checkingToSaving(Account account) {
+    PreparedStatement stmt = null;
+    try {
+      stmt =
+          conn.prepareStatement("UPDATE bankaccountinfo SET checkingaccount = checkingaccount - ?"
+              + ",savingsaccount = ? + savingsaccount WHERE username = ?");
+      stmt.setDouble(2, account.getSavingBalance());
+      stmt.setDouble(1, account.getCheckingBalance());
+      stmt.setString(3, account.getUsername());
+      stmt.execute();
+
+    } catch (SQLException e) {
+      System.out.println("You do not have enough funds to withdraw that amount.");
+    }
+    log.trace("savings and checking account balance updated");
+  }
+
 }
 
 
