@@ -74,12 +74,14 @@ public class UserMainSelection {
   // user decides if they want to access checking or savings
   public static void userMainSelection() {
 
-    System.out.println(
-        "Would you like to access your checking or your savings account?\n1)Checking\n2)Savings");
-    Integer userChoice = Integer.parseInt(in.nextLine());
+
 
     while (true) {
       try {
+        System.out.println(
+            "Would you like to access your checking or your savings account?\n1)Checking\n2)Savings");
+        Integer userChoice = Integer.parseInt(in.nextLine());
+        
         if (userChoice == 1) {
           checkingAccount();
           break;
@@ -193,8 +195,9 @@ public class UserMainSelection {
       } catch (NumberFormatException e) {
         System.out.println("Please enter 1 or 2");
         doSomethingElse();
+        break;
       }
-      break;
+      
     }
 
   }
